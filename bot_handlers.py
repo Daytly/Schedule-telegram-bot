@@ -22,6 +22,10 @@ async def start(update: Update, context: CallbackContext) -> None:
         f"Привет! Я бот для просмотра расписания в школе. Для начала используйте команду /help.")
 
 
+async def about(update: Update, context: CallbackContext) -> None:
+    await update.message.reply_text("Данный бот был создан для ИУП, учеником Лицея №129 Гороховым Ильёй")
+
+
 async def help_command(update: Update, context: CallbackContext) -> None:
     help_text = (
         "Доступные команды:\n"

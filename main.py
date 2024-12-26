@@ -27,6 +27,7 @@ def main():
 
     # Регистрируем обработчики команд
     application.add_handler(CommandHandler("start", start))
+    application.add_handler(CommandHandler("about", about))
     application.add_handler(CommandHandler("help", help_command))
     application.add_handler(CommandHandler("schedule_bells", schedule_bells_handler))
     application.add_handler(CommandHandler("class_schedule", class_schedule_handler))
