@@ -30,6 +30,7 @@ async def help_command(update: Update, context: CallbackContext) -> None:
     help_text = (
         "Доступные команды:\n"
         "/start - Начать работу с ботом\n"
+        "/about - Информация о создателе"
         "/help - Получить помощь\n"
         "/schedule_bells - Просмотреть общее расписание звонков школы\n"
         "/class_schedule <класс> - Просмотреть расписание конкретного класса (например, 7A)\n"
