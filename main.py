@@ -1,7 +1,7 @@
 from telegram import Update
 from telegram.ext import CallbackContext, Application, filters, CommandHandler, MessageHandler
 from bot_handlers import start, help_command, schedule_bells_handler, class_schedule_handler, change_class, \
-    class_schedule_short_handler
+    class_schedule_short_handler, about
 from admin_commands import add_admin, change_schedule
 from notify_school import notify_all, notify_class
 from database import init_db, engine
