@@ -34,14 +34,18 @@ async def change_schedule(update: Update, context: CallbackContext) -> None:
         return
 
     class_name = context.args[0].upper()
-    new_schedule = ' '.join(context.args[1:])
+    new_schedule = update.message.text.replace(f"/change_schedule {class_name} ", "")
     with SessionLocal() as session:
         schedule = session.query(ClassSchedule).filter_by(class_name=class_name).first()
+        path = f"shedule/{class_name}.txt"
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(new_schedule)
         if not schedule:
-            new_class_schedule = ClassSchedule(class_name=class_name, schedule=new_schedule)
+            new_class_schedule = ClassSchedule(class_name=class_name, schedule=path)
             session.add(new_class_schedule)
         else:
-            schedule.schedule = new_schedule
+            schedule.schedule = path
+            session.merge(schedule)
         session.commit()
 
     await update.message.reply_text(f"Расписание для класса {class_name} успешно изменено.")

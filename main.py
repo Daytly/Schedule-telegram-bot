@@ -1,4 +1,5 @@
 from telegram import Update
+from telegram.constants import ParseMode
 from telegram.ext import CallbackContext, Application, filters, CommandHandler, MessageHandler
 from bot_handlers import start, help_command, schedule_bells_handler, class_schedule_handler, change_class, \
     class_schedule_short_handler, about
@@ -6,13 +7,15 @@ from admin_commands import add_admin, change_schedule
 from notify_school import notify_all, notify_class
 from database import init_db, engine
 from logger import logger
-
+import pandas as pd
+from PIL import Image, ImageDraw, ImageFont
+import matplotlib.pyplot as plt
 
 TOKEN = '7636937652:AAEBBTcIG-NPSo1ZNhboiWqUZ584JXKPANE'
 
 
 async def echo(update: Update, context: CallbackContext) -> None:
-    await update.message.reply_text(f"Вы написали: {update.message.text}")
+    await update.message.reply_html(f"Вы написали: {update.message.text}")
 
 
 async def error(update: Update, context: CallbackContext) -> None:

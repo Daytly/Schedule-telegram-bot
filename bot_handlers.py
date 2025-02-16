@@ -17,9 +17,13 @@ async def start(update: Update, context: CallbackContext) -> None:
             new_user = User(user_id=user_id, username=username)
             session.add(new_user)
             session.commit()
-
-    await update.message.reply_text(
-        f"Привет! Я бот для просмотра расписания в школе. Для начала используйте команду /help.")
+            await update.message.reply_text(
+                f"Привет! Похоже ты тут в первый раз. Я бот для просмотра расписания в школе. "
+                f"/change_class <класс>  - Установить свой класс (например, 7A)."
+                f"А затем можешь список всех команд /help.")
+        else:
+            await update.message.reply_text(
+                f"Снова привет! Я бот для просмотра расписания в школе. Для начала используйте команду /help.")
 
 
 async def about(update: Update, context: CallbackContext) -> None:
@@ -30,7 +34,7 @@ async def help_command(update: Update, context: CallbackContext) -> None:
     help_text = (
         "Доступные команды:\n"
         "/start - Начать работу с ботом\n"
-        "/about - Информация о создателе"
+        "/about - Информация о создателе\n"
         "/help - Получить помощь\n"
         "/schedule_bells - Просмотреть общее расписание звонков школы\n"
         "/class_schedule <класс> - Просмотреть расписание конкретного класса (например, 7A)\n"
@@ -63,8 +67,10 @@ async def class_schedule_short_handler(update: Update, context: CallbackContext)
             return
         schedule = session.query(ClassSchedule).filter_by(class_name=user.class_name).first()
         if schedule:
-            await update.message.reply_text(f"Расписание для класса {user.class_name}:\n{schedule.schedule}",
-                                            parse_mode=ParseMode.MARKDOWN)
+            with open(schedule.schedule, "r", encoding="utf-8") as f:
+                stripper = '\n'
+                await update.message.reply_text(f"Расписание:\n{stripper.join(f.readlines())}",
+                                                parse_mode=ParseMode.MARKDOWN)
         else:
             await update.message.reply_text(
                 f"Расписание для класса {user.class_name} не найдено. Пожалуйста, убедитесь, что вы ввели правильное "
@@ -81,8 +87,10 @@ async def class_schedule_handler(update: Update, context: CallbackContext) -> No
     with SessionLocal() as session:
         schedule = session.query(ClassSchedule).filter_by(class_name=class_name).first()
         if schedule:
-            await update.message.reply_text(f"Расписание для класса {class_name}:\n{schedule.schedule}",
-                                            parse_mode=ParseMode.MARKDOWN)
+            with open(schedule.schedule, "r", encoding="utf-8") as f:
+                stripper = '\n'
+                await update.message.reply_text(f"Расписание для класса {class_name}:\n{stripper.join(f.readlines())}",
+                                                parse_mode=ParseMode.MARKDOWN)
         else:
             await update.message.reply_text(
                 f"Расписание для класса {class_name} не найдено. Пожалуйста, убедитесь, что вы ввели правильное "
