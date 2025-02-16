@@ -18,9 +18,9 @@ async def start(update: Update, context: CallbackContext) -> None:
             session.add(new_user)
             session.commit()
             await update.message.reply_text(
-                f"Привет! Похоже ты тут в первый раз. Я бот для просмотра расписания в школе. "
+                f"Привет! Похоже ты тут в первый раз. Я бот для просмотра расписания в школе."
                 f"/change_class <класс>  - Установить свой класс (например, 7A)."
-                f"А затем можешь список всех команд /help.")
+                f"А затем можешь посмотреть список всех команд /help.")
         else:
             await update.message.reply_text(
                 f"Снова привет! Я бот для просмотра расписания в школе. Для начала используйте команду /help.")
@@ -68,7 +68,7 @@ async def class_schedule_short_handler(update: Update, context: CallbackContext)
         schedule = session.query(ClassSchedule).filter_by(class_name=user.class_name).first()
         if schedule:
             with open(schedule.schedule, "r", encoding="utf-8") as f:
-                stripper = '\n'
+                stripper = ''
                 await update.message.reply_text(f"Расписание:\n{stripper.join(f.readlines())}",
                                                 parse_mode=ParseMode.MARKDOWN)
         else:
@@ -88,7 +88,7 @@ async def class_schedule_handler(update: Update, context: CallbackContext) -> No
         schedule = session.query(ClassSchedule).filter_by(class_name=class_name).first()
         if schedule:
             with open(schedule.schedule, "r", encoding="utf-8") as f:
-                stripper = '\n'
+                stripper = ''
                 await update.message.reply_text(f"Расписание для класса {class_name}:\n{stripper.join(f.readlines())}",
                                                 parse_mode=ParseMode.MARKDOWN)
         else:
